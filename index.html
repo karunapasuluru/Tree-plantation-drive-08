@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Plantation Drive - ECE Department</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            overflow-x: hidden;
+        }
+        
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+            position: relative;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 50%, #1a5f3f 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .college-info {
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b6b 100%);
+            padding: 30px 50px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .college-name {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(-50px);
+            text-align: center;
+        }
+        
+        .department-name {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 5em;
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-50px);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+        
+        .hero p {
+            font-size: 1.8em;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            max-width: 900px;
+        }
+        
+        .hero .emoji {
+            font-size: 7em;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: scale(0);
+        }
+        
+        .content-section {
+            background: white;
+        }
+        
+        .tree-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin: 50px 0;
+        }
+        
+        .tree {
+            width: 150px;
+            height: 150px;
+            opacity: 0;
+            transform: scale(0) rotate(-180deg);
+            font-size: 4em;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+            max-width: 1200px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .stat-card h3 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card p {
+            font-size: 1.2em;
+        }
+        
+        .volunteers-section {
+            background: #f0f9e8;
+        }
+        
+        .volunteers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 50px 0;
+        }
+        
+        .volunteer-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            border: 3px solid #2d5016;
+        }
+        
+        .volunteer-card .avatar {
+            width: 80px;
+            height: 80px;
+            background: #667eea;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+        }
+        
+        .form-section {
+            background: linear-gradient(135deg, #2d5016 0%, #1a3009 100%);
+            color: white;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            opacity: 0;
+            transform: rotate(-5deg) scale(0.9);
+        }
+        
+        .form-container h2 {
+            color: #2d5016;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            color: #2d5016;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.1em;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        
+        /* Image Upload Style */
+        .image-upload-wrapper {
+            position: relative;
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .image-upload-input {
+            display: none;
+        }
+        
+        .image-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 40px 20px;
+            border: 3px dashed #2d5016;
+            border-radius: 15px;
+            background: #f0f9e8;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .image-upload-label:hover {
+            background: #e0f0d8;
+            border-color: #1a3009;
+        }
+        
+        .image-upload-label .icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+        
+        .image-upload-label .text {
+            color: #2d5016;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .image-upload-label .subtitle {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .image-preview {
+            display: none;
+            margin-top: 15px;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #2d5016;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-preview .remove-btn {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .form-group button {
+            background: #2d5016;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .form-group button:hover {
+            background: #1a3009;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.2em;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+        
+        .title {
+            font-size: 3em;
+            color: #2d5016;
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        
+        .description {
+            font-size: 1.3em;
+            color: #666;
+            text-align: center;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Gallery Section for Uploaded Images */
+        .gallery-section {
+            background: white;
+            padding: 50px 20px;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 30px 0;
+        }
+        
+        .gallery-item {
+            opacity: 0;
+            transform: scale(0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #2d5016;
+            background: white;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gallery-item .caption {
+            padding: 15px;
+            background: #f0f9e8;
+            color: #2d5016;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        /* Footer College Info */
+        .footer-college {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 50px;
+        }
+        
+        .footer-college h3 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .footer-college p {
+            font-size: 1.3em;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with College Info -->
+    <section class="section hero">
+        <div class="emoji">🌿</div>
+        
+        <!-- College Information -->
+        <div class="college-info">
+            <div class="college-name">GATES INSTITUTE OF TECHNOLOGY</div>
+            <div class="department-name">📍 Gooty | ECE DEPARTMENT 📡</div>
+        </div>
+        
+        <h1>Tree Plantation Drive</h1>
+        <p>Join us in making the world greener and better! ECE Department invites all students and faculty to participate in this eco-friendly initiative.</p>
+        <div class="scroll-indicator">↓ Scroll to explore</div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="section content-section">
+        <h2 class="title">About Our Mission</h2>
+        <p class="description">Gates Institute of Technology, ECE Department is committed to planting 10,000+ trees across Gooty to combat climate change and create a sustainable future for everyone.</p>
+        
+        <div class="tree-container">
+            <div class="tree">🌱</div>
+            <div class="tree">🌳</div>
+            <div class="tree">🌲</div>
+            <div class="tree">🪴</div>
+            <div class="tree">🌴</div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="section content-section">
+        <h2 class="title">Our Impact</h2>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>5,230</h3>
+                <p>Trees Planted 🌳</p>
+            </div>
+            <div class="stat-card">
+                <h3>847</h3>
+                <p>Volunteers 👥</p>
+            </div>
+            <div class="stat-card">
+                <h3>12</h3>
+                <p>Locations 📍</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Volunteers Section -->
+    <section class="section volunteers-section">
+        <h2 class="title">Our Volunteers</h2>
+        <p class="description">Meet the amazing ECE students and faculty who make this drive possible</p>
+        
+        <div class="volunteers-grid">
+            <div class="volunteer-card">
+                <div class="avatar">👨</div>
+                <h3>B.manikanta</h3>
+                <p>Team Leader</p>
+            </div>
+            <div class="volunteer-card">
+                <div class="avatar">👩</div>
+                <h3>B.Nandhini </h3>
+                <p>Organizer</p>
+            </div>
+            <div class="volunteer-card">
+                <div class="avatar">👨</div>
+                <h3>s.mohammed mureez</h3>
+                <p>Volunteer</p>
+            </div>
+            <div class="volunteer-card">
+                <div class="avatar">👨</div>
+                <h3>B.Ragavendra</h3>
+                <p>Volunteer</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section (Uploaded Images) -->
+    <section class="gallery-section">
+        <h2 class="title">📍 Location Photos</h2>
+        <p class="description">Photos from ECE Department's tree plantation drives at Gooty</p>
+        
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Uploaded images will appear here -->
+        </div>
+    </section>
+    
+    <!-- Join Form Section -->
+    <section class="section form-section">
+        <div class="form-container">
+            <h2>🌱 Join Our Drive</h2>
+            
+            <div class="form-group">
+                <label>📢 Drive Name:</label>
+                <input type="text" id="driveName" placeholder="ECE Green Initiative 2026">
+            </div>
+            
+            <div class="form-group">
+                <label>📍 Location:</label>
+                <input type="text" id="location" placeholder="Gooty, Anantapur District">
+            </div>
+            
+            <!-- Image Upload for Location -->
+            <div class="form-group">
+                <label>📸 Upload Location Photo:</label>
+                <div class="image-upload-wrapper">
+                    <input type="file" id="locationImage" class="image-upload-input" accept="image/*">
+                    <label for="locationImage" class="image-upload-label">
+                        <span class="icon">📷</span>
+                        <span class="text">Click to Upload Photo</span>
+                        <span class="subtitle">Supports: JPG, PNG, GIF</span>
+                    </label>
+                </div>
+                
+                <!-- Image Preview -->
+                <div class="image-preview" id="imagePreview">
+                    <img id="previewImg" src="" alt="Preview">
+                    <button class="remove-btn" onclick="removeImage()">❌ Remove Photo</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>👥 Your Name:</label>
+                <input type="text" id="volunteerName" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label>🌳 Tree Type:</label>
+                <select id="treeType">
+                    <option>Bilachi</option>
+                    <option>Mango</option>
+                    <option>Neem</option>
+                    <option>Peepal</option>
+                    <option>Banyan</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>🔢 Quantity:</label>
+                <input type="number" id="quantity" value="1" min="1">
+            </div>
+            
+            <div class="form-group">
+                <button onclick="submitForm()">✅ Join Now</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <section class="section hero">
+        <h2 style="font-size: 2.5em; margin-bottom: 20px;">🌍 Make a Difference</h2>
+        <p style="font-size: 1.3em;">Every tree counts. Join us today!</p>
+        <div style="font-size: 5em; margin-top: 30px;">🌿</div>
+    </section>
+    
+    <!-- Footer College Info -->
+    <div class="footer-college">
+        <h3>🏛️ GATES INSTITUTE OF TECHNOLOGY</h3>
+        <p>📍 Gooty, Anantapur District | 📡 ECE DEPARTMENT</p>
+        <p style="margin-top: 20px; font-size: 1.1em;">🌿 Building a Greener Future Together 🌿</p>
+    </div>
+    
+    <script>
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Image Upload Variables
+        let uploadedImage = null;
+        
+        // Image Upload Handler
+        document.getElementById('locationImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
+            if (file) {
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('⚠️ Image size should be less than 5MB!');
+                    return;
+                }
+                
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    uploadedImage = event.target.result;
+                    document.getElementById('previewImg').src = uploadedImage;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Remove Image
+        function removeImage() {
+            uploadedImage = null;
+            document.getElementById('locationImage').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('previewImg').src = '';
+        }
+        
+        // Submit Form
+        function submitForm() {
+            const driveName = document.getElementById('driveName').value;
+            const location = document.getElementById('location').value;
+            const volunteerName = document.getElementById('volunteerName').value;
+            const treeType = document.getElementById('treeType').value;
+            const quantity = document.getElementById('quantity').value;
+            
+            if (!driveName || !location || !volunteerName) {
+                alert('⚠️ Please fill all required fields!');
+                return;
+            }
+            
+            // Add to gallery if image uploaded
+            if (uploadedImage) {
+                addImageToGallery(driveName, location, uploadedImage);
+            }
+            
+            alert(`✅ Successfully joined!
+🌳 ${quantity} ${treeType} trees
+📍 ${location}
+👤 ${volunteerName}
+
+🏛️ GATES INSTITUTE OF TECHNOLOGY, ECE Dept`);
+            
+            // Reset form
+            document.getElementById('driveName').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('volunteerName').value = '';
+            document.getElementById('quantity').value = '1';
+            removeImage();
+        }
+        
+        // Add Image to Gallery
+        function addImageToGallery(driveName, location, imageSrc) {
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `
+                <img src="${imageSrc}" alt="${driveName}">
+                <div class="caption">
+                    🏛️ GATES Institute, ECE<br>
+                    📢 ${driveName}<br>
+                    📍 ${location}
+           
